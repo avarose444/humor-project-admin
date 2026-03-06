@@ -1,17 +1,16 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const params = useSearchParams();
-
-  useEffect(() => {
-    if (params.get("error") === "unauthorized") setError("Access denied — superadmin privileges required.");
-    if (params.get("error") === "auth_callback") setError("Authentication error. Please try again.");
-  }, [params]);
+  const errorParam = params.get("error");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(
+    errorParam === "unauthorized" ? "Access denied — superadmin privileges required." :
+    errorParam === "auth_callback" ? "Authentication error. Please try again." : ""
+  );
 
   const handleGoogleLogin = async () => {
     setLoading(true);

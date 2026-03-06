@@ -4,6 +4,8 @@ import DashboardClient from "./DashboardClient";
 
 export const dynamic = "force-dynamic";
 
+const TWENTY_ONE_DAYS_AGO = new Date(Date.now() - 21 * 86400000).toISOString();
+
 export default async function DashboardPage() {
   const sb = await createClient();
 
@@ -32,7 +34,7 @@ export default async function DashboardPage() {
     sb.from("captions").select("*", { count: "exact", head: true }).eq("is_public", true),
     sb.from("captions").select("*", { count: "exact", head: true }).eq("is_featured", true),
     sb.from("captions").select("created_datetime_utc")
-      .gte("created_datetime_utc", new Date(Date.now() - 21 * 86400000).toISOString())
+      .gte("created_datetime_utc", TWENTY_ONE_DAYS_AGO)
       .order("created_datetime_utc", { ascending: true }),
     sb.from("captions").select("id, content, like_count, is_featured, is_public")
       .order("like_count", { ascending: false }).limit(5),
@@ -43,9 +45,11 @@ export default async function DashboardPage() {
   ]);
 
   const days = Array.from({ length: 21 }, (_, i) => {
-    const d = new Date(); d.setDate(d.getDate() - (20 - i));
+    const d = new Date();
+    d.setDate(d.getDate() - (20 - i));
     return d.toISOString().split("T")[0];
   });
+
   const dayMap: Record<string, number> = {};
   (captionsByDay || []).forEach(c => {
     const day = c.created_datetime_utc?.split("T")[0];
@@ -54,11 +58,15 @@ export default async function DashboardPage() {
   const chartData = days.map(d => ({ day: d.slice(5), count: dayMap[d] || 0 }));
 
   const flavorMap: Record<string, number> = {};
-  (flavorBreakdown || []).forEach((c: { humor_flavor_id: number | null; humor_flavors: { slug: string } | null }) => {
-    const slug = (c.humor_flavors as { slug: string } | null)?.slug || `flavor_${c.humor_flavor_id}`;
-    flavorMap[slug] = (flavorMap[slug] || 0) + 1;
+  (flavorBreakdown || []).forEach((c: { humor_flavor_id: number | null; humor_flavors: unknown }) => {
+    const flavors = c.humor_flavors as { slug: string } | { slug: string }[] | null;
+    const slug = Array.isArray(flavors) ? flavors[0]?.slug : flavors?.slug || `flavor_${c.humor_flavor_id}`;
+    if (slug) flavorMap[slug] = (flavorMap[slug] || 0) + 1;
   });
-  const flavorData = Object.entries(flavorMap).sort((a, b) => b[1] - a[1]).slice(0, 6)
+
+  const flavorData = Object.entries(flavorMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
     .map(([slug, count]) => ({ slug, count }));
 
   return (
@@ -66,13 +74,19 @@ export default async function DashboardPage() {
       <Sidebar />
       <main style={{ flex: 1, marginLeft: "220px", padding: "2.5rem 2rem" }}>
         <DashboardClient stats={{
-          totalUsers: totalUsers || 0, totalImages: totalImages || 0,
-          totalCaptions: totalCaptions || 0, totalVotes: totalVotes || 0,
-          totalLikes: totalLikes || 0, bugReports: bugReports || 0,
-          studyUsers: studyUsers || 0, publicCaptions: publicCaptions || 0,
+          totalUsers: totalUsers || 0,
+          totalImages: totalImages || 0,
+          totalCaptions: totalCaptions || 0,
+          totalVotes: totalVotes || 0,
+          totalLikes: totalLikes || 0,
+          bugReports: bugReports || 0,
+          studyUsers: studyUsers || 0,
+          publicCaptions: publicCaptions || 0,
           featuredCaptions: featuredCaptions || 0,
-          chartData, topCaptions: topCaptions || [],
-          recentBugs: recentBugs || [], flavorData,
+          chartData,
+          topCaptions: topCaptions || [],
+          recentBugs: recentBugs || [],
+          flavorData,
         }} />
       </main>
     </div>
