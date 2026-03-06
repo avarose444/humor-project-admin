@@ -1,26 +1,96 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --ink: #080810;
+  --dim: #111118;
+  --card: #16161f;
+  --border: #222232;
+  --border2: #2e2e42;
+  --slate: #6b7280;
+  --muted: #9ca3af;
+  --paper: #f0ece3;
+  --acid: #b8f723;
+  --rust: #f04f23;
+  --blue: #4f8ef0;
+  --purple: #9b6dff;
+  --gold: #f0b823;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--dim); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; }
+
+.inp {
+  background: var(--dim); border: 1px solid var(--border); color: var(--paper);
+  padding: 0.6rem 0.875rem; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+  width: 100%; outline: none; border-radius: 4px; transition: border-color 0.15s;
+}
+.inp:focus { border-color: var(--acid); }
+.inp::placeholder { color: var(--slate); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em; padding: 0.55rem 1.1rem;
+  border-radius: 3px; cursor: pointer; transition: all 0.15s; border: none;
+}
+.btn-primary { background: var(--acid); color: var(--ink); }
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-danger { background: transparent; color: var(--rust); border: 1px solid var(--rust); }
+.btn-danger:hover { background: var(--rust); color: white; }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--muted); color: var(--paper); }
+
+.tbl-head {
+  display: grid; padding: 0.6rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate);
+  background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);
+}
+.tbl-row {
+  display: grid; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border);
+  align-items: center; transition: background 0.1s;
+}
+.tbl-row:hover { background: rgba(255,255,255,0.015); }
+.tbl-row:last-child { border-bottom: none; }
+
+.badge {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 3px;
+}
+.badge-green { background: rgba(184,247,35,0.12); color: var(--acid); }
+.badge-red { background: rgba(240,79,35,0.12); color: var(--rust); }
+.badge-blue { background: rgba(79,142,240,0.12); color: var(--blue); }
+.badge-purple { background: rgba(155,109,255,0.12); color: var(--purple); }
+.badge-gold { background: rgba(240,184,35,0.12); color: var(--gold); }
+.badge-gray { background: rgba(107,114,128,0.15); color: var(--muted); }
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.35s ease forwards; }
+.fade-up-1 { animation: fadeUp 0.35s 0.04s ease both; }
+.fade-up-2 { animation: fadeUp 0.35s 0.08s ease both; }
+.fade-up-3 { animation: fadeUp 0.35s 0.12s ease both; }
+.fade-up-4 { animation: fadeUp 0.35s 0.16s ease both; }
+.fade-up-5 { animation: fadeUp 0.35s 0.20s ease both; }
+.fade-up-6 { animation: fadeUp 0.35s 0.24s ease both; }
