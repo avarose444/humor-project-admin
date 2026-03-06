@@ -46,7 +46,7 @@ export default async function CaptionsPage() {
             <div style={{ padding: "2rem 1.25rem", color: "var(--slate)", fontSize: "0.85rem" }}>No captions yet.</div>
           ) : captions.map(cap => {
             const profile = cap.profiles as { first_name?: string; last_name?: string; email?: string } | null;
-            const flavor = cap.humor_flavors as { slug: string } | null;
+            const flavor = (Array.isArray(cap.humor_flavors) ? cap.humor_flavors[0] : cap.humor_flavors) as { slug: string } | null;
             const author = [profile?.first_name, profile?.last_name].filter(Boolean).join(" ") || profile?.email || "—";
             return (
               <div key={cap.id} className="tbl-row" style={{ gridTemplateColumns: "3fr 1.5fr 1.5fr 80px 80px 80px 100px" }}>
