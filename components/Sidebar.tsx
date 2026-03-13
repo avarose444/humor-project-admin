@@ -65,7 +65,7 @@ export default function Sidebar() {
                 </button>
                 {isOpen && (
                   <div style={{ paddingLeft: "8px" }}>
-                    {item.children.map(({ href, label, icon: CIcon }) => {
+                    {(item.children || []).map(({ href, label, icon: CIcon }) => {
                       const active = path === href;
                       return (
                         <Link key={href} href={href} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0.4rem 0.75rem", borderRadius: "4px", background: active ? "rgba(184,247,35,0.07)" : "transparent", color: active ? "var(--acid)" : "var(--muted)", borderLeft: `2px solid ${active ? "var(--acid)" : "transparent"}`, textDecoration: "none", fontSize: "0.72rem", fontFamily: "'JetBrains Mono', monospace", transition: "all 0.1s" }}>
