@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LayoutDashboard, Users, Image, MessageSquare, LogOut, Zap, BookOpen, FlaskConical, Sliders, FileText, Cpu, Building2, Link2, MailCheck, Globe, List, HelpCircle, ChevronDown, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Users, Image, MessageSquare, LogOut, Zap, BookOpen, FlaskConical, Sliders, FileText, Cpu, Building2, Link2, MailCheck, Globe, List, HelpCircle, ChevronDown, ChevronRight, BarChart } from "lucide-react";
 import { useState } from "react";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/ratings", label: "Ratings", icon: BarChart },
   { label: "Content", icon: FileText, children: [
     { href: "/users", label: "Users", icon: Users },
     { href: "/images", label: "Images", icon: Image },
