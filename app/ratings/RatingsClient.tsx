@@ -1,7 +1,7 @@
 "use client";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
-  ResponsiveContainer, Cell, PieChart, Pie, Legend,
+  ResponsiveContainer, Cell,
 } from "recharts";
 import { ThumbsUp, ThumbsDown, Activity, TrendingUp } from "lucide-react";
 
@@ -186,7 +186,7 @@ export default function RatingsClient({ stats }: { stats: Stats }) {
           ))}
           <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
             <p className="mono" style={{ fontSize: "0.58rem", color: "var(--slate)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.5rem" }}>Most Downvoted</p>
-            {topDownvotedIds.slice(0, 3).map((item, i) => (
+            {topDownvotedIds.slice(0, 3).map((item) => (
               <div key={item.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.35rem 0" }}>
                 <span className="mono" style={{ fontSize: "0.65rem", color: "var(--slate)" }}>{item.id.slice(0, 22)}...</span>
                 <span className="badge badge-red">👎 {item.count}</span>

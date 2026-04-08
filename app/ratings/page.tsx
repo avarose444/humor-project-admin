@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import Sidebar from "@/components/Sidebar";
 import RatingsClient from "./RatingsClient";
 
+const THIRTY_DAYS_AGO = new Date(Date.now() - 30 * 86400000).toISOString();
+
 export const dynamic = "force-dynamic";
 
 export default async function RatingsPage() {
@@ -40,7 +42,7 @@ export default async function RatingsPage() {
     // votes over last 30 days
     sb.from("caption_votes")
       .select("created_datetime_utc, vote_value")
-      .gte("created_datetime_utc", new Date(Date.now() - 30 * 86400000).toISOString())
+      .gte("created_datetime_utc", THIRTY_DAYS_AGO)
       .order("created_datetime_utc", { ascending: true }),
 
     // total votes
