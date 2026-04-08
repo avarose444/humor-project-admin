@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { LayoutDashboard, Users, Image, MessageSquare, LogOut, Zap, BookOpen, FlaskConical, Sliders, FileText, Cpu, Building2, Link2, MailCheck, Globe, List, HelpCircle, ChevronDown, ChevronRight, BarChart } from "lucide-react";
+import { LayoutDashboard, Users, Image, MessageSquare, LogOut, BookOpen, FlaskConical, Sliders, FileText, Cpu, Building2, Link2, MailCheck, Globe, List, HelpCircle, ChevronDown, ChevronRight, BarChart } from "lucide-react";
 import { useState } from "react";
 
 const nav = [
@@ -37,30 +37,40 @@ export default function Sidebar() {
   const path = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState<string[]>(["Content", "Humor Engine", "LLM", "Access"]);
-
   const signOut = async () => { await createClient().auth.signOut(); router.push("/login"); };
   const toggleGroup = (label: string) => setOpen(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]);
 
   return (
-    <aside style={{ position: "fixed", left: 0, top: 0, height: "100vh", width: "220px", background: "var(--dim)", borderRight: "1px solid var(--border)", display: "flex", flexDirection: "column", zIndex: 50, overflowY: "auto" }}>
-      <div style={{ padding: "1.25rem 1.25rem 1rem", borderBottom: "1px solid var(--border)", flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-          <div style={{ width: "2px", height: "22px", background: "var(--acid)" }} />
-          <span className="font-display" style={{ fontSize: "1.5rem", letterSpacing: "0.1em", color: "var(--paper)" }}>HUMOR</span>
+    <aside style={{
+      position: "fixed", left: 0, top: 0, height: "100vh", width: "220px",
+      background: "white", borderRight: "1px solid var(--border)",
+      display: "flex", flexDirection: "column", zIndex: 50, overflowY: "auto",
+    }}>
+      <div style={{ padding: "1.5rem 1.25rem 1.25rem", borderBottom: "1px solid var(--border)" }}>
+        <div style={{ marginBottom: "2px" }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 400, color: "var(--deep)", letterSpacing: "0.04em", fontStyle: "italic" }}>
+            Humor Study
+          </span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginLeft: "10px" }}>
-          <Zap size={9} color="var(--acid)" />
-          <span className="mono" style={{ fontSize: "0.55rem", color: "var(--slate)", letterSpacing: "0.12em", textTransform: "uppercase" }}>Admin Panel</span>
-        </div>
+        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "0.58rem", color: "var(--slate)", textTransform: "uppercase", letterSpacing: "0.14em" }}>
+          Admin Panel
+        </p>
       </div>
-      <nav style={{ flex: 1, padding: "0.75rem 0.6rem", display: "flex", flexDirection: "column", gap: "1px" }}>
+
+      <nav style={{ flex: 1, padding: "1rem 0.75rem", display: "flex", flexDirection: "column", gap: "2px" }}>
         {nav.map((item) => {
           if ('children' in item) {
             const isOpen = open.includes(item.label);
             const Icon = item.icon;
             return (
               <div key={item.label}>
-                <button onClick={() => toggleGroup(item.label)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "0.45rem 0.75rem", background: "none", border: "none", color: "var(--slate)", cursor: "pointer", borderRadius: "4px", fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "4px" }}>
+                <button onClick={() => toggleGroup(item.label)} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  width: "100%", padding: "0.45rem 0.75rem", background: "none", border: "none",
+                  color: "var(--slate)", cursor: "pointer", borderRadius: "8px",
+                  fontFamily: "'Jost', sans-serif", fontSize: "0.65rem",
+                  textTransform: "uppercase", letterSpacing: "0.1em", marginTop: "6px",
+                }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}><Icon size={11} />{item.label}</div>
                   {isOpen ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
                 </button>
@@ -69,7 +79,15 @@ export default function Sidebar() {
                     {(item.children || []).map(({ href, label, icon: CIcon }) => {
                       const active = path === href;
                       return (
-                        <Link key={href} href={href} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0.4rem 0.75rem", borderRadius: "4px", background: active ? "rgba(184,247,35,0.07)" : "transparent", color: active ? "var(--acid)" : "var(--muted)", borderLeft: `2px solid ${active ? "var(--acid)" : "transparent"}`, textDecoration: "none", fontSize: "0.72rem", fontFamily: "'JetBrains Mono', monospace", transition: "all 0.1s" }}>
+                        <Link key={href} href={href} style={{
+                          display: "flex", alignItems: "center", gap: "8px",
+                          padding: "0.42rem 0.75rem", borderRadius: "8px",
+                          background: active ? "var(--petal)" : "transparent",
+                          color: active ? "var(--deep)" : "var(--slate)",
+                          borderLeft: `2px solid ${active ? "var(--dusty)" : "transparent"}`,
+                          textDecoration: "none", fontSize: "0.75rem",
+                          fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s",
+                        }}>
                           <CIcon size={11} />{label}
                         </Link>
                       );
@@ -82,17 +100,32 @@ export default function Sidebar() {
           const active = path === item.href;
           const Icon = item.icon;
           return (
-            <Link key={item.href} href={item.href} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0.5rem 0.75rem", borderRadius: "4px", background: active ? "rgba(184,247,35,0.07)" : "transparent", color: active ? "var(--acid)" : "var(--slate)", borderLeft: `2px solid ${active ? "var(--acid)" : "transparent"}`, textDecoration: "none", fontSize: "0.78rem", fontFamily: "'JetBrains Mono', monospace", transition: "all 0.15s" }}>
+            <Link key={item.href} href={item.href} style={{
+              display: "flex", alignItems: "center", gap: "10px",
+              padding: "0.5rem 0.75rem", borderRadius: "8px",
+              background: active ? "var(--petal)" : "transparent",
+              color: active ? "var(--deep)" : "var(--ink)",
+              borderLeft: `2px solid ${active ? "var(--dusty)" : "transparent"}`,
+              textDecoration: "none", fontSize: "0.82rem",
+              fontFamily: "'DM Sans', sans-serif", fontWeight: active ? 500 : 400,
+              transition: "all 0.15s",
+            }}>
               <Icon size={13} />{item.label}
             </Link>
           );
         })}
       </nav>
-      <div style={{ padding: "0.75rem", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
-        <button onClick={signOut} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0.5rem 0.75rem", width: "100%", background: "none", border: "none", color: "var(--slate)", cursor: "pointer", fontSize: "0.72rem", fontFamily: "'JetBrains Mono', monospace", borderRadius: "4px", transition: "color 0.15s" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "var(--rust)")}
+
+      <div style={{ padding: "0.75rem", borderTop: "1px solid var(--border)" }}>
+        <button onClick={signOut} style={{
+          display: "flex", alignItems: "center", gap: "10px",
+          padding: "0.5rem 0.75rem", width: "100%", background: "none", border: "none",
+          color: "var(--slate)", cursor: "pointer", fontSize: "0.78rem",
+          fontFamily: "'DM Sans', sans-serif", borderRadius: "8px", transition: "color 0.15s",
+        }}
+          onMouseEnter={e => (e.currentTarget.style.color = "var(--mauve)")}
           onMouseLeave={e => (e.currentTarget.style.color = "var(--slate)")}
-        ><LogOut size={13} /> Sign Out</button>
+        ><LogOut size={13} /> Sign out</button>
       </div>
     </aside>
   );
