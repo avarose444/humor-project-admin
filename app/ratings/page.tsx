@@ -130,7 +130,7 @@ export default async function RatingsPage() {
               id: c.id,
               content: c.content,
               like_count: c.like_count,
-              flavor: (c.humor_flavors as { slug: string } | null)?.slug || null,
+              flavor: (Array.isArray(c.humor_flavors) ? c.humor_flavors[0] : c.humor_flavors as { slug: string } | null)?.slug || null,
             })),
             topVotedIds,
             topDownvotedIds,
